@@ -58,6 +58,23 @@ class CategryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function destroy($categry)
+{
+    $categry = Categry::findOrFail($categry);
+    $categry->delete();
+
+    return response()->json(['message' => 'Category deleted successfully']);
+}
+
+
+
+public function restore($categoryId)
+{
+    $category = Categry::withTrashed()->findOrFail($categoryId);
+    $category->restore();
+
+    return response()->json(['message' => 'Category restored successfully']);
+}
 
 
 
