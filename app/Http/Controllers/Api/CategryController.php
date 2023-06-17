@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CategryResource;
 use App\Models\Categry;
 use Illuminate\Http\Request;
-
-
+use App\Http\Requests\StoreCategryRequest;
 class CategryController extends Controller
 {
     /**
@@ -23,12 +22,13 @@ class CategryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategryRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|unique:categries|max:20',
-            'description' => 'required',
-        ]);
+        // $data = $request->validate([
+        //     'name' => 'required|unique:categries|max:20',
+        //     'description' => 'required',
+        // ]);
+        $data = $request->all();
         
         $categry = Categry::create($data);
     
@@ -49,14 +49,11 @@ class CategryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $categry)
+    public function update(StoreCategryRequest $request, $categry)
     {
         $categry = Categry::findOrFail($categry);
     
-        $data = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
+        $data = $request->validated();
     
         $categry->update($data);
     
