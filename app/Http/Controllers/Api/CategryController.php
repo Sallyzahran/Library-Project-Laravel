@@ -8,7 +8,6 @@ use App\Models\Categry;
 use Illuminate\Http\Request;
 
 
-
 class CategryController extends Controller
 {
     /**
@@ -50,10 +49,20 @@ class CategryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $categry)
     {
-        //
+        $categry = Categry::findOrFail($categry);
+    
+        $data = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+    
+        $categry->update($data);
+    
+        return new CategryResource($categry);
     }
+    
 
     /**
      * Remove the specified resource from storage.

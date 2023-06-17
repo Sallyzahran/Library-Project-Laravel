@@ -25,3 +25,5 @@ Route::post('/categries', [CategryController::class, 'store']);
 Route::delete('/categries/{categry}', [CategryController::class, 'destroy']);
 Route::patch('/categries/{categry}/restore', [CategryController::class, 'restore']);
 
+Route::put('/categries/{categry}', [CategryController::class, 'update']);
+
