@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategryResource;
+use App\Models\Categry;
 use Illuminate\Http\Request;
 
 class CategryController extends Controller
@@ -12,7 +14,9 @@ class CategryController extends Controller
      */
     public function index()
     {
-        //
+        // return Categry::all();
+        $Categries= Categry::all();
+        return CategryResource::collection($Categries);//transformation From Resources file
     }
 
     /**

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Categry extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'name',
+        'description',
+        
+    ];
 }
