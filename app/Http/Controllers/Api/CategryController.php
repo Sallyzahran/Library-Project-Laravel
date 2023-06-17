@@ -26,10 +26,10 @@ class CategryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:categries|max:20',
             'description' => 'required',
         ]);
-    
+        
         $categry = Categry::create($data);
     
         // return new CategryResource($categry);
