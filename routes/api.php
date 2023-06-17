@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/categries',[CategryController::class, 'index']);
+Route::get('/categries/{categry}',[CategryController::class, 'show']);

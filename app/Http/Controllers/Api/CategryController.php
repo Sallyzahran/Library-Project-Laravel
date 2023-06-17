@@ -30,9 +30,10 @@ class CategryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show( $categry)
     {
-        //
+        $categry= Categry::find($categry);
+        return new CategryResource($categry);
     }
 
     /**
