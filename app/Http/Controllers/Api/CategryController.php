@@ -7,6 +7,8 @@ use App\Http\Resources\CategryResource;
 use App\Models\Categry;
 use Illuminate\Http\Request;
 
+
+
 class CategryController extends Controller
 {
     /**
@@ -24,8 +26,17 @@ class CategryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+    
+        $categry = Categry::create($data);
+    
+        // return new CategryResource($categry);
+        return response()->json($categry,201);
     }
+    
 
     /**
      * Display the specified resource.
@@ -47,8 +58,7 @@ class CategryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+
+
+
 }

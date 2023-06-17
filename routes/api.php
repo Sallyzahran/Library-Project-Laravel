@@ -21,3 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/categries',[CategryController::class, 'index']);
 Route::get('/categries/{categry}',[CategryController::class, 'show']);
+Route::post('/categries', [CategryController::class, 'store']);
+Route::delete('/categries/{categry}', [CategryController::class, 'destroy']);
+Route::patch('/categries/{categry}/restore', [CategryController::class, 'restore']);
+
