@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,9 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{user}', [UserController::class, 'show']);
+Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{user}', [UserController::class, 'update']);
-Route::delete('/users/{user}', [UserController::class, 'destroy']);
-Route::patch('/users/{user}/restore', [UserController::class, 'restore']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::patch('/users/{id}/restore', [UserController::class, 'restore']);
 

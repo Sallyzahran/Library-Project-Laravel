@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -23,8 +24,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $user = User::create($request->validated());
-        return response()->json(new UserResource($user), 201);
+        $data = $request->all();
+        $user = User::create($data);
+        return response()->json($user, 201);
     }
 
     /**
