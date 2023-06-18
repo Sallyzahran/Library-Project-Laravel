@@ -11,7 +11,7 @@ class StoreBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class StoreBookRequest extends FormRequest
             'description' => 'required|string',
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|max:15'  
+            // 'image' => 'nullable|image|max:15'  
               ];
     }
 }
