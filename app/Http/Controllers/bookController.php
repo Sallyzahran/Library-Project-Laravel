@@ -6,8 +6,12 @@ use App\Http\Services\Media;
 
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Http\Resources\BookCollection;
+
 
 use App\Models\Book;
+
+
 use Illuminate\Http\Request;
 
 
@@ -19,9 +23,9 @@ class bookController extends Controller
     public function index()
     {
 
-        $books = Book::all();
-        return response()->json(compact('books'));
-        
+        $books = Book::with('category', 'author')->get();
+        return new BookCollection($books);
+   
     }
 
     /**
@@ -47,17 +51,17 @@ class bookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
-    // public function edit( Book $book)
+    // public function show(string $id)
     // {
-
-    //         return response()->json(compact('book'));
-        
+    //     //
     // }
+
+    public function edit( Book $book)
+    {
+
+            return response()->json(compact('book'));
+        
+    }
 
 
 
@@ -87,6 +91,7 @@ class bookController extends Controller
      */
     public function destroy(Book $book)
     {
+        Media::delete(public_path(("images\books\\{$book->image}")));
      
         $book->delete();
         return response()->json(['success'=>true,'message'=>'Book Deleted Successfully']);

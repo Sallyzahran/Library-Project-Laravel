@@ -7,10 +7,10 @@ use Illuminate\Http\UploadedFile;
 
 class Media {
 
-    public static function upload( UploadedFile $image,string $dir):string
+    public static function upload(UploadedFile $image,string $dir):string
     {
 
-         $newImageName = $image->hasName();
+         $newImageName = $image->getClientOriginalName();
          $image->move(public_path($dir),$newImageName);
          return $newImageName;
     }
