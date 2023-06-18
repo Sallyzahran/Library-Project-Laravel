@@ -14,23 +14,42 @@ class BookCollection extends ResourceCollection
      */
     public function toArray(Request $request)
     {
-        return [
-            'books' => $this->collection->map(function ($book) {
-                return [
-                    'id' => $book->id,
-                    'title' => $book->title,
-                    'description' => $book->description,
-                    'image' => $book->image,
-                    'author' => [
-                        'id' => $book->author->id,
-                        'name' => $book->author->name,
-                    ],
-                    'category' => [
-                        'id' => $book->category->id,
-                        'name' => $book->category->name,
-                        'description' => $book->category->description,
-                    ],
-                ];
-            }),
-        ];    }
+        if ($request->route()->getName() === 'books.show') {
+            $book = $this->collection->first();
+            return [
+                'id' => $book->id,
+                'title' => $book->title,
+                'description' => $book->description,
+                'image' => $book->image,
+                'author' => [
+                    'id' => $book->author->id,
+                    'name' => $book->author->name,
+                ],
+                'category' => [
+                    'id' => $book->category->id,
+                    'name' => $book->category->name,
+                    'description' => $book->category->description,
+                ],
+            ];
+        } else {
+            return [
+                'books' => $this->collection->map(function ($book) {
+                    return [
+                        'id' => $book->id,
+                        'title' => $book->title,
+                        'description' => $book->description,
+                        'image' => $book->image,
+                        'author' => [
+                            'id' => $book->author->id,
+                            'name' => $book->author->name,
+                        ],
+                        'category' => [
+                            'id' => $book->category->id,
+                            'name' => $book->category->name,
+                            'description' => $book->category->description,
+                        ],
+                    ];
+                }),
+            ];
+        }    }
 }

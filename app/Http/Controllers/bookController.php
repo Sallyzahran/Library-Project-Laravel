@@ -7,6 +7,8 @@ use App\Http\Services\Media;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
+
 
 
 use App\Models\Book;
@@ -56,12 +58,18 @@ class bookController extends Controller
     //     //
     // }
 
-    public function edit( Book $book)
-    {
+    // public function edit( Book $book)
+    // {
 
-            return response()->json(compact('book'));
+    //         return response()->json(compact('book'));
         
-    }
+    // }
+
+    public function show(Book $book)
+{
+    return new BookCollection(collect([$book]));
+}
+
 
 
 
