@@ -30,6 +30,18 @@ class bookController extends Controller
     public function store(StoreBookRequest $request)
     {
 
+        $data = $request->except('image');
+        if($request->hasFile('image')){
+            $data['image'] = Media::upload($request->image,'images\books');
+
+        }
+        if (Book::create($data)){
+            return response()->json(['success'=>true,'message'=>'Book Added Successfully']);
+
+        }else {
+            return response()->json(['success'=>false,'message'=>'somthing went'],500);
+
+        }
     }
 
     /**
