@@ -19,3 +19,6 @@ yarn-error.log
 /.vscode
 /database/migrations/2023_06_17_234839_create_authors_table.php
 /database/migrations/2023_06_17_234924_create_categories_table.php
+/app/Models/Author.php
+/app/Models/Category.php
+
