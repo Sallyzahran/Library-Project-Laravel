@@ -20,3 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::resource('books',bookController::class);
+
+
+Route::get('books', [bookController::class,'filter']);

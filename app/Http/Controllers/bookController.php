@@ -7,7 +7,6 @@ use App\Http\Services\Media;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Resources\BookCollection;
-use App\Http\Resources\BookResource;
 
 
 
@@ -29,6 +28,7 @@ class bookController extends Controller
         return new BookCollection($books);
    
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -53,10 +53,7 @@ class bookController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(string $id)
-    // {
-    //     //
-    // }
+  
 
     // public function edit( Book $book)
     // {
@@ -70,6 +67,48 @@ class bookController extends Controller
     return new BookCollection(collect([$book]));
 }
 
+
+public function filter(Request $request)
+{
+    $query = Book::with('category', 'author');
+
+    if ($request->has('order_by')) {
+        $orderBy = $request->get('order_by');
+        if ($orderBy === 'name') {
+            $query->orderBy('title', 'asc');
+        } elseif ($orderBy === 'latest') {
+            $query->latest('updated_at');
+        }
+    }
+
+    if ($request->has('search')) {
+        $search = $request->get('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+                ->orWhereHas('author', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+        });
+    }
+
+    if ($request->has('category_id')) {
+        $category_id = $request->get('category_id');
+        $query->whereHas('category', function ($q) use ($category_id) {
+            $q->where('id', $category_id);
+        });
+    }
+
+    $books = $query->get();
+  if ($books->count() === 0) {
+        return response()->json(['message' => 'No books found'], 404);
+    }
+
+    if ($books->count() === 1) {
+        return new BookCollection(collect([$books->first()]));
+    }
+
+    return new BookCollection($books);
+}
 
 
 
