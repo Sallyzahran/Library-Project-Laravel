@@ -38,7 +38,7 @@ class bookController extends Controller
 
         $data = $request->except('image');
         if($request->hasFile('image')){
-            $data['image'] = Media::upload($request->image,'images\books');
+            $data['image'] = Media::upload($request->image,'images/books');
 
         }
         if (Book::create($data)){
@@ -121,7 +121,7 @@ public function filter(Request $request)
 
         $data = $request->except('image');
         if($request->hasFile('image')){
-            $data['image'] = Media::upload($request->image,'images\books');
+            $data['image'] = Media::upload($request->image,'images/books');
 
         }
         if ($book->update($data)){
