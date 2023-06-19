@@ -20,13 +20,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/categries',[CategryController::class, 'index'])->middleware(['auth:sanctum']);
-Route::get('/categries/{categry}',[CategryController::class, 'show']);
-Route::post('/categries', [CategryController::class, 'store']);
-Route::delete('/categries/{categry}', [CategryController::class, 'destroy']);
-Route::patch('/categries/{categry}/restore', [CategryController::class, 'restore']);
 
-Route::put('/categries/{categry}', [CategryController::class, 'update']);
+
+Route::middleware('auth:sanctum')->prefix('categries')->group(function () {
+    Route::get('/', [CategryController::class, 'index']);
+    Route::get('/{category}', [CategryController::class, 'show']);
+    Route::post('/', [CategryController::class, 'store']);
+    Route::delete('/{category}', [CategryController::class, 'destroy']);
+    Route::patch('/{category}/restore', [CategryController::class, 'restore']);
+    Route::put('/{category}', [CategryController::class, 'update']);
+});
+
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
