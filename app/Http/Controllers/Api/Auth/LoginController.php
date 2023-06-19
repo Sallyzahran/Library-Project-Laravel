@@ -17,6 +17,30 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-   
+        // Return validation errors if any
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+       
+        $credentials = $request->only('email', 'password');
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        
+        $user = $request->user();
+        $token = $user->createToken('API Token')->plainTextToken;
+
+        
+        return response()->json([
+            'message' => 'Login successful',
+            'access_token' => $token,
+        ]);
     }
 }
