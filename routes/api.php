@@ -19,7 +19,17 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::resource('books',bookController::class);
+// Route::resource('books',bookController::class);
 
 
-Route::get('books', [bookController::class,'filter']);
+// Route::get('books', [bookController::class,'filter']);
+
+
+Route::group(['prefix' => 'books'], function () {
+    Route::get('/', [bookController::class, 'index']);
+    Route::get('/', [bookController::class, 'filter']);
+    Route::get('/{book}', [bookController::class, 'show']);
+    Route::post('/', [bookController::class, 'store']);
+    Route::delete('/{book}', [bookController::class, 'destroy']);
+    Route::put('/{book}', [bookController::class, 'update']);
+});
