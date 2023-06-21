@@ -26,4 +26,11 @@ class Author extends Model
 }
 protected $fillable = ['name'];
 
+public static function rules()
+{
+    return [
+        'name' => 'required|max:20',
+    ];
+}
+
 }

@@ -24,7 +24,10 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = Author::create($request->all());
+
+        $validatedData = $request->validate(Author::rules());
+
+        $author = Author::create($validatedData);
 
         return response()->json($author);
     }
@@ -45,7 +48,8 @@ class AuthorController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        $author->update($request->all());
+        $validatedData = $request->validate(Author::rules($author->id));
+        $author->update($validatedData);
 
         return response()->json($author);
     }
