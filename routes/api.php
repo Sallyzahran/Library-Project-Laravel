@@ -42,11 +42,11 @@ Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super 
     Route::put('/{book}', [bookController::class, 'update']);
 });
 
-// Route::post('books', [bookController::class, 'store']);
 
 
 
 Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
+    Route::get('/{book}', [bookController::class, 'show']);
     Route::get('/', [bookController::class, 'index']);
     Route::get('/', [bookController::class, 'filter']);
 });
@@ -55,29 +55,40 @@ Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super 
 
 
 
+Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum', 'role:Super admin']], function () {
 
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
-Route::patch('/users/{id}/restore', [UserController::class, 'restore']);
-
-
-
-
+Route::get('/', [UserController::class, 'index']);
+Route::get('/{id}', [UserController::class, 'show']);
+Route::post('/', [UserController::class, 'store']);
+Route::put('/{id}', [UserController::class, 'update']);
+Route::delete('/{id}', [UserController::class, 'destroy']);
+Route::patch('/{id}/restore', [UserController::class, 'restore']);
+});
 
 
 
-Route::get('/authors', [AuthorController::class, 'index']);
-Route::get('/authors/{author}', [AuthorController::class, 'show']);
+
+
+Route::group(['prefix' => 'authors', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
+
+
+Route::get('/', [AuthorController::class, 'index']);
+Route::get('/{author}', [AuthorController::class, 'show']);
 Route::post('/authors', [AuthorController::class, 'store']);
 Route::put('/authors/{author}', [AuthorController::class, 'update']);
 Route::delete('/authors/{author}', [AuthorController::class, 'destroy']);
 Route::patch('/authors/{author}/restore', [AuthorController::class, 'restore']);
+});
+
+Route::group(['prefix' => 'authors', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
+    Route::get('/{author}', [AuthorController::class, 'show']);
+    Route::get('/', [AuthorController::class, 'index']);
+});
 
 
-Route::middleware('auth:sanctum')->prefix('categries')->group(function () {
+
+
+Route::group(['prefix' => 'categories', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
     Route::get('/', [CategryController::class, 'index']);
     Route::get('/{category}', [CategryController::class, 'show']);
     Route::post('/', [CategryController::class, 'store']);
@@ -85,6 +96,13 @@ Route::middleware('auth:sanctum')->prefix('categries')->group(function () {
     Route::patch('/{category}/restore', [CategryController::class, 'restore']);
     Route::put('/{category}', [CategryController::class, 'update']);
 });
+
+Route::group(['prefix' => 'categories', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
+    Route::get('/', [CategryController::class, 'index']);
+    Route::get('/{category}', [CategryController::class, 'show']);
+});
+
+
 
 
 
