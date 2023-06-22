@@ -7,6 +7,7 @@ use App\Http\Resources\CategryResource;
 use App\Models\Categry;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCategryRequest;
+use App\Http\Requests\UpdateCategryRequest;
 class CategryController extends Controller
 {
     /**
@@ -61,16 +62,25 @@ class CategryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreCategryRequest $request, $categry)
+    public function update(UpdateCategryRequest $request, $categry)
     {
-        $categry = Categry::findOrFail($categry);
-    
         $data = $request->validated();
     
-        $categry->update($data);
+        $newCategry = new Categry([
+            'name' => $data['name'],
+            'description' => $data['description'],
+        ]);
+    
+        $categry = Categry::findOrFail($categry);
+        $categry->delete();
+    
+        $categry->name = $newCategry->name;
+        $categry->description = $newCategry->description;
+        $categry->save();
     
         return new CategryResource($categry);
     }
+    
     
 
     /**
