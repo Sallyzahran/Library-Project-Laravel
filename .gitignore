@@ -25,5 +25,3 @@ yarn-error.log
 /database/migrations/2023_06_20_124125_create_categories_table.php
 /public/images/books
 /app/Http/Controllers/LoginController.php
-/app/Http/Controllers/usercontroller.php
-/app/Http/Requests/UserRequest.php

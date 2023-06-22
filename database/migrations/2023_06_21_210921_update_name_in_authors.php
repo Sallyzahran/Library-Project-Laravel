@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->foreignId('author_id')->constrained();
-
+        Schema::table('authors', function (Blueprint $table) {
+            $table->string('name', 20)->nullable(false)->change();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->dropForeign(['author_id']);
-            $table->dropColumn('author_id');
+        Schema::table('authors', function (Blueprint $table) {
+            //
         });
     }
 };
