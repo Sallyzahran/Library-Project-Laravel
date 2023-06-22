@@ -21,5 +21,9 @@ yarn-error.log
 /database/migrations/2023_06_17_234924_create_categories_table.php
 /app/Models/Author.php
 /app/Models/Category.php
-
+/database/migrations/2023_06_20_124026_create_authors_table.php
+/database/migrations/2023_06_20_124125_create_categories_table.php
 /public/images/books
+/app/Http/Controllers/LoginController.php
+/app/Http/Controllers/usercontroller.php
+/app/Http/Requests/UserRequest.php
