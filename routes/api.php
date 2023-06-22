@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\bookController;
-use App\Http\Controllers\LoginController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +9,9 @@ use App\Http\Controllers\Api\AuthorController;
 
 
 
+use App\Http\Controllers\Api\CategryController;
+// use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,16 +37,16 @@ Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super 
     Route::get('/', [bookController::class, 'index']);
     Route::get('/', [bookController::class, 'filter']);
     Route::get('/{book}', [bookController::class, 'show']);
-    // Route::post('/', [bookController::class, 'store']);
+    Route::post('/', [bookController::class, 'store']);
     Route::delete('/{book}', [bookController::class, 'destroy']);
     Route::put('/{book}', [bookController::class, 'update']);
 });
 
-Route::post('books', [bookController::class, 'store']);
+// Route::post('books', [bookController::class, 'store']);
 
 
 
-Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
+Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
     Route::get('/', [bookController::class, 'index']);
     Route::get('/', [bookController::class, 'filter']);
 });
@@ -52,7 +54,6 @@ Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super 
 
 
 
-Route::post('/login', [LoginController::class, 'login']);
 
 
 Route::get('/users', [UserController::class, 'index']);
@@ -62,15 +63,36 @@ Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::patch('/users/{id}/restore', [UserController::class, 'restore']);
 
-Route::apiResource('authors' ,\App\Http\Controllers\Api\AuthorController::class);
 
 
 
 
 
-// Route::get('/authors', [\App\Http\Controllers\Api\AuthorController::class, 'index']);
-// Route::get('/authors/{id}', [\App\Http\Controllers\Api\AuthorController::class, 'show']);
-// Route::post('/authors', [\App\Http\Controllers\Api\AuthorController::class, 'store']);
-// Route::put('/authors/{id}', [\App\Http\Controllers\Api\AuthorController::class, 'update']);
-// Route::delete('/authors/{id}', [\App\Http\Controllers\Api\AuthorController::class, 'destroy']);
-// Route::patch('/authors/{id}/restore', [\App\Http\Controllers\Api\AuthorController::class, 'restore']);
+
+Route::get('/authors', [AuthorController::class, 'index']);
+Route::get('/authors/{author}', [AuthorController::class, 'show']);
+Route::post('/authors', [AuthorController::class, 'store']);
+Route::put('/authors/{author}', [AuthorController::class, 'update']);
+Route::delete('/authors/{author}', [AuthorController::class, 'destroy']);
+Route::patch('/authors/{author}/restore', [AuthorController::class, 'restore']);
+
+
+Route::middleware('auth:sanctum')->prefix('categries')->group(function () {
+    Route::get('/', [CategryController::class, 'index']);
+    Route::get('/{category}', [CategryController::class, 'show']);
+    Route::post('/', [CategryController::class, 'store']);
+    Route::delete('/{category}', [CategryController::class, 'destroy']);
+    Route::patch('/{category}/restore', [CategryController::class, 'restore']);
+    Route::put('/{category}', [CategryController::class, 'update']);
+});
+
+
+
+
+
+
+
+
+
+// Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login']);
