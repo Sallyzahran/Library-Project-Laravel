@@ -22,20 +22,32 @@ class CategryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategryRequest $request)
-    {
-        // $data = $request->validate([
-        //     'name' => 'required|unique:categries|max:20',
-        //     'description' => 'required',
-        // ]);
-        $data = $request->all();
+    // public function store(StoreCategryRequest $request)
+    // {
+      
+    //     $data = $request->all();
         
-        $categry = Categry::create($data);
+    //     $categry = Categry::create($data);
     
-        // return new CategryResource($categry);
-        return response()->json($categry,201);
+    //     // return new CategryResource($categry);
+    //     return response()->json($categry,201);
+    // }
+    public function store(StoreCategryRequest $request)
+{
+    $data = $request->validated();
+    
+    $categry = Categry::withTrashed()->where('name', $data['name'])->first();
+
+    if ($categry) {
+        $categry->restore();
+        return response()->json($categry, 201);
     }
-    
+
+    $categry = Categry::create($data);
+
+    return response()->json($categry, 201);
+}
+
 
     /**
      * Display the specified resource.
