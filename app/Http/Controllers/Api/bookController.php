@@ -21,10 +21,45 @@ class bookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $books = Book::with('category', 'author')->get();
+        $query  = Book::with('category', 'author');
+
+        if ($request->has('order_by')) {
+            $orderBy = $request->get('order_by');
+            if ($orderBy === 'name') {
+                $query->orderBy('title', 'asc');
+            } elseif ($orderBy === 'latest') {
+                $query->latest('updated_at');
+            }
+        }
+    
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhereHas('author', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+    
+        if ($request->has('category_id')) {
+            $category_id = $request->get('category_id');
+            $query->whereHas('category', function ($q) use ($category_id) {
+                $q->where('id', $category_id);
+            });
+        }
+    
+        $books = $query->get();
+      if ($books->count() === 0) {
+            return response()->json(['message' => 'No books found'], 404);
+        }
+    
+        if ($books->count() === 1) {
+            return new BookCollection(collect([$books->first()]));
+        }
         return new BookCollection($books);
    
     }
@@ -65,49 +100,6 @@ class bookController extends Controller
     public function show(Book $book)
 {
     return new BookCollection(collect([$book]));
-}
-
-
-public function filter(Request $request)
-{
-    $query = Book::with('category', 'author');
-
-    if ($request->has('order_by')) {
-        $orderBy = $request->get('order_by');
-        if ($orderBy === 'name') {
-            $query->orderBy('title', 'asc');
-        } elseif ($orderBy === 'latest') {
-            $query->latest('updated_at');
-        }
-    }
-
-    if ($request->has('search')) {
-        $search = $request->get('search');
-        $query->where(function ($q) use ($search) {
-            $q->where('title', 'like', "%{$search}%")
-                ->orWhereHas('author', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                });
-        });
-    }
-
-    if ($request->has('category_id')) {
-        $category_id = $request->get('category_id');
-        $query->whereHas('category', function ($q) use ($category_id) {
-            $q->where('id', $category_id);
-        });
-    }
-
-    $books = $query->get();
-  if ($books->count() === 0) {
-        return response()->json(['message' => 'No books found'], 404);
-    }
-
-    if ($books->count() === 1) {
-        return new BookCollection(collect([$books->first()]));
-    }
-
-    return new BookCollection($books);
 }
 
 

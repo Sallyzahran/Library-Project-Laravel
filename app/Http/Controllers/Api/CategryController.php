@@ -17,7 +17,7 @@ class CategryController extends Controller
     public function index()
     {
         // return Categry::all();
-        $Categries= Categry::all();
+        $Categries= Categry::withCount('books')->get();
         return CategryResource::collection($Categries);//transformation From Resources file
     }
 

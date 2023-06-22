@@ -12,6 +12,16 @@ class Categry extends Model
     // protected $dates = ['deleted_at'];
     protected $table = 'categories';
 
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+    
+    
+        public function getTotalBooksAttribute()
+    {
+        return $this->books()->count();
+    }
     protected $fillable=[
         'name',
         'description',

@@ -33,25 +33,58 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {   
-    Route::get('/', [bookController::class, 'index']);
-    Route::get('/', [bookController::class, 'filter']);
-    Route::get('/{book}', [bookController::class, 'show']);
-    Route::post('/', [bookController::class, 'store']);
-    Route::delete('/{book}', [bookController::class, 'destroy']);
-    Route::put('/{book}', [bookController::class, 'update']);
+// Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {   
+//     Route::get('/', [bookController::class, 'index']);
+//     Route::get('/', [bookController::class, 'filter']);
+//     Route::get('/{book}', [bookController::class, 'show']);
+//     Route::post('/', [bookController::class, 'store']);
+//     Route::delete('/{book}', [bookController::class, 'destroy']);
+//     Route::put('/{book}', [bookController::class, 'update']);
+// });
+
+
+
+
+// Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
+//     Route::get('/{book}', [bookController::class, 'show']);
+//     Route::get('/', [bookController::class, 'index']);
+//     Route::get('/', [bookController::class, 'filter']);
+// });
+
+
+//Book Routes
+
+Route::middleware(['auth:sanctum', 'role:Super admin,Admin'])->group(function () {
+    Route::resource('books', bookController::class);
+});
+
+Route::middleware(['auth:sanctum', 'role:Super admin,Admin,Viewer'])->group(function () {
+    Route::resource('books', bookController::class)->only(['show','index']);
 });
 
 
 
+//Author Routes
 
-Route::group(['prefix' => 'books', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
-    Route::get('/{book}', [bookController::class, 'show']);
-    Route::get('/', [bookController::class, 'index']);
-    Route::get('/', [bookController::class, 'filter']);
+Route::middleware(['auth:sanctum', 'role:Super admin,Admin'])->group(function () {
+    Route::resource('authors', AuthorController::class);
+});
+
+Route::middleware(['auth:sanctum', 'role:Super admin,Admin,Viewer'])->group(function () {
+    Route::resource('authors', AuthorController::class)->only(['show', 'index']);
 });
 
 
+
+//Category Routes
+
+Route::middleware(['auth:sanctum', 'role:Super admin,Admin'])->group(function () {
+    Route::resource('categories', CategryController::class);
+});
+
+Route::middleware(['auth:sanctum', 'role:Super admin,Admin,Viewer'])->group(function () {
+    Route::resource('categories', CategryController::class)->only(['index', 'show']);
+});
 
 
 
@@ -59,48 +92,51 @@ Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum', 'role:Super 
 
 Route::get('/', [UserController::class, 'index']);
 Route::get('/{id}', [UserController::class, 'show']);
-Route::post('/', [UserController::class, 'store']);
+// Route::post('/', [UserController::class, 'store']);
 Route::put('/{id}', [UserController::class, 'update']);
 Route::delete('/{id}', [UserController::class, 'destroy']);
 Route::patch('/{id}/restore', [UserController::class, 'restore']);
 });
 
+Route::post('/users', [UserController::class, 'store']);
 
 
 
 
-Route::group(['prefix' => 'authors', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
 
 
-Route::get('/', [AuthorController::class, 'index']);
-Route::get('/{author}', [AuthorController::class, 'show']);
-Route::post('/authors', [AuthorController::class, 'store']);
-Route::put('/authors/{author}', [AuthorController::class, 'update']);
-Route::delete('/authors/{author}', [AuthorController::class, 'destroy']);
-Route::patch('/authors/{author}/restore', [AuthorController::class, 'restore']);
-});
-
-Route::group(['prefix' => 'authors', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
-    Route::get('/{author}', [AuthorController::class, 'show']);
-    Route::get('/', [AuthorController::class, 'index']);
-});
+// Route::group(['prefix' => 'authors', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
 
 
+// Route::get('/', [AuthorController::class, 'index']);
+// Route::get('/{author}', [AuthorController::class, 'show']);
+// Route::post('/', [AuthorController::class, 'store']);
+// Route::put('/authors/{author}', [AuthorController::class, 'update']);
+// Route::delete('/authors/{author}', [AuthorController::class, 'destroy']);
+// Route::patch('/authors/{author}/restore', [AuthorController::class, 'restore']);
+// });
+
+// Route::group(['prefix' => 'authors', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
+//     Route::get('/{author}', [AuthorController::class, 'show']);
+//     Route::get('/', [AuthorController::class, 'index']);
+// });
 
 
-Route::group(['prefix' => 'categories', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
-    Route::get('/', [CategryController::class, 'index']);
-    Route::get('/{category}', [CategryController::class, 'show']);
-    Route::post('/', [CategryController::class, 'store']);
-    Route::delete('/{category}', [CategryController::class, 'destroy']);
-    Route::patch('/{category}/restore', [CategryController::class, 'restore']);
-    Route::put('/{category}', [CategryController::class, 'update']);
-});
 
-Route::group(['prefix' => 'categories', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
-    Route::get('/', [CategryController::class, 'index']);
-    Route::get('/{category}', [CategryController::class, 'show']);
-});
+
+// Route::group(['prefix' => 'categories', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin']], function () {
+//     Route::get('/', [CategryController::class, 'index']);
+//     Route::get('/{category}', [CategryController::class, 'show']);
+//     Route::post('/', [CategryController::class, 'store']);
+//     Route::delete('/{category}', [CategryController::class, 'destroy']);
+//     Route::patch('/{category}/restore', [CategryController::class, 'restore']);
+//     Route::put('/{category}', [CategryController::class, 'update']);
+// });
+
+// Route::group(['prefix' => 'categories', 'middleware' => ['auth:sanctum', 'role:Super admin,Admin,Viewer']], function () {
+//     Route::get('/', [CategryController::class, 'index']);
+//     Route::get('/{category}', [CategryController::class, 'show']);
+// });
 
 
 
