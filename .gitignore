@@ -17,7 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-public/images/books
 /app/Http/Controllers/LoginController.php
 /app/Http/Controllers/usercontroller.php
 
