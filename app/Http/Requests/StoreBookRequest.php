@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 
@@ -25,9 +27,13 @@ class StoreBookRequest extends FormRequest
         return [
             'title' => 'required|string|max:30',
             'description' => 'required|string',
-            'author_id' => 'required|exists:authors,id',
-            'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|max:15'  
+            'author_id' => 'exists:authors,id',
+            'category_id' => 'required|array',
+            'category_id.*' => 'required|exists:categories,id',
+            'image' => 'nullable|image|max:1000'  
               ];
+              
     }
+
+    
 }

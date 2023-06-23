@@ -18,6 +18,9 @@ class Book extends Model
     'title','description','author_id','category_id','image'
   ];
 
+  protected $casts = [
+    'category_id' => 'array', 
+];
 
 
     public function author()
@@ -26,8 +29,8 @@ class Book extends Model
     }
 
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsToMany(Category::class);
     }
 }

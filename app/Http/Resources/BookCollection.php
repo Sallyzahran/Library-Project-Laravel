@@ -25,11 +25,14 @@ class BookCollection extends ResourceCollection
                     'id' => $book->author->id,
                     'name' => $book->author->name,
                 ],
-                'category' => [
-                    'id' => $book->category->id,
-                    'name' => $book->category->name,
-                    'description' => $book->category->description,
-                ],
+                'categories' => $book->categories->map(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                    ];
+                }),
+    
+            
             ];
         } else {
             return [
@@ -43,11 +46,14 @@ class BookCollection extends ResourceCollection
                             'id' => $book->author->id,
                             'name' => $book->author->name,
                         ],
-                        'category' => [
-                            'id' => $book->category->id,
-                            'name' => $book->category->name,
-                            'description' => $book->category->description,
-                        ],
+                        'categories' => $book->categories->map(function ($category) {
+                            return [
+                                'id' => $category->id,
+                                'name' => $category->name,
+                            ];
+                        }),
+            
+                    
                     ];
                 }),
             ];

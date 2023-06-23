@@ -25,8 +25,9 @@ class UpdateBookRequest extends FormRequest
             'title' => 'string|max:30',
             'description' => 'string',
             'author_id' => 'exists:authors,id',
-            'category_id' => 'exists:categories,id',
-            'image' => 'nullable|image|max:15'  
+            'category_id' => 'array',
+            'category_id.*' => 'exists:categories,id',
+            'image' => 'nullable|image|max:10000'  
         ];
     }
 }

@@ -24,7 +24,7 @@ class bookController extends Controller
     public function index(Request $request)
     {
 
-        $query  = Book::with('category', 'author');
+        $query  = Book::with('categories', 'author');
 
         if ($request->has('order_by')) {
             $orderBy = $request->get('order_by');
@@ -45,10 +45,10 @@ class bookController extends Controller
             });
         }
     
-        if ($request->has('category_id')) {
-            $category_id = $request->get('category_id');
-            $query->whereHas('category', function ($q) use ($category_id) {
-                $q->where('id', $category_id);
+        if ($request->has('category')) {
+            $category = $request->get('category');
+            $query->whereHas('categories', function ($q) use ($category) {
+                $q->where('name', $category);
             });
         }
     
@@ -70,19 +70,17 @@ class bookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-
         $data = $request->except('image');
-        if($request->hasFile('image')){
-            $data['image'] = Media::upload($request->image,'images/books');
-
+    
+        if ($request->hasFile('image')) {
+            $data['image'] = Media::upload($request->image, 'images/books');
         }
-        if (Book::create($data)){
-            return response()->json(['success'=>true,'message'=>'Book Added Successfully']);
-
-        }else {
-            return response()->json(['success'=>false,'message'=>'somthing went'],500);
-
-        }
+    
+        $book = Book::create($data);
+    
+        $book->categories()->sync($request->input('category_id'));
+    
+        return response()->json(['success' => true, 'message' => 'Book added successfully']);
     }
 
     /**
@@ -109,20 +107,18 @@ class bookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
-     
-
-        $data = $request->except('image');
-        if($request->hasFile('image')){
-            $data['image'] = Media::upload($request->image,'images/books');
-
+        $data = $request->except('image', 'category_id');
+        if ($request->hasFile('image')) {
+            $data['image'] = Media::upload($request->image, 'images/books');
         }
-        if ($book->update($data)){
-            return response()->json(['success'=>true,'message'=>'Book Updated Successfully']);
-
-        }else {
-            return response()->json(['success'=>false,'message'=>'somthing went'],500);
-
+    
+        $book->update($data);
+    
+        if ($request->has('category_id')) {
+            $book->categories()->sync($request->category_id);
         }
+    
+        return response()->json(['success' => true, 'message' => 'Book Updated Successfully']);
     }
 
     /**
@@ -131,7 +127,8 @@ class bookController extends Controller
     public function destroy(Book $book)
     {
         Media::delete(public_path(("images\books\\{$book->image}")));
-     
+        $book->categories()->detach();
+
         $book->delete();
         return response()->json(['success'=>true,'message'=>'Book Deleted Successfully']);
 
