@@ -6,22 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Categry extends Model
+class Category extends Model
 {
-    use HasFactory, SoftDeletes;
-    // protected $dates = ['deleted_at'];
-    protected $table = 'categories';
+    use HasFactory,SoftDeletes;
 
+    
     public function books()
     {
         return $this->hasMany(Book::class);
     }
-    
-    
-        public function getTotalBooksAttribute()
-    {
-        return $this->books()->count();
-    }
+    // protected $appends = ['books_count'];
+
+    // public function getBooksCountAttribute()
+    // {
+    //     return $this->books()->count();
+    // }
+   
     protected $fillable=[
         'name',
         'description',

@@ -12,10 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('books', function (Blueprint $table) {
-       $table->foreignId('author_id')->constrained();
-
-        });  
-      }
+            $table->foreignId('author_id')->constrained();
+        });
+    }
 
     /**
      * Reverse the migrations.
@@ -25,8 +24,6 @@ return new class extends Migration
         Schema::table('books', function (Blueprint $table) {
             $table->dropForeign(['author_id']);
             $table->dropColumn('author_id');
-            
-     
-             });  
+        });
     }
 };

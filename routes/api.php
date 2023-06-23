@@ -8,8 +8,11 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthorController;
 
 
+use App\Http\Controllers\Api\CategoryController;
 
-use App\Http\Controllers\Api\CategryController;
+
+
+// use App\Http\Controllers\Api\CategryController;
 // use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\LoginController;
 /*
@@ -78,13 +81,13 @@ Route::middleware(['auth:sanctum', 'role:Super admin,Admin,Viewer'])->group(func
 
 //Category Routes
 
-Route::middleware(['auth:sanctum', 'role:Super admin,Admin'])->group(function () {
-    Route::resource('categories', CategryController::class);
-});
+// Route::middleware(['auth:sanctum', 'role:Super admin,Admin'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+// });
 
-Route::middleware(['auth:sanctum', 'role:Super admin,Admin,Viewer'])->group(function () {
-    Route::resource('categories', CategryController::class)->only(['index', 'show']);
-});
+// Route::middleware(['auth:sanctum', 'role:Super admin,Admin,Viewer'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+// });
 
 
 

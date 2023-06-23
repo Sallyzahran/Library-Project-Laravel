@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategryResource;
-use App\Models\Categry;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreCategryRequest;
 use App\Http\Requests\UpdateCategryRequest;
-class CategryController extends Controller
+class CategoryController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         // return Categry::all();
-        $Categries= Categry::withCount('books')->get();
+        $Categries= Category::withCount('books')->get();
         return CategryResource::collection($Categries);//transformation From Resources file
     }
 
@@ -38,14 +38,14 @@ class CategryController extends Controller
 {
     $data = $request->validated();
     
-    $categry = Categry::withTrashed()->where('name', $data['name'])->first();
+    $categry = Category::withTrashed()->where('name', $data['name'])->first();
 
     if ($categry) {
         $categry->restore();
         return response()->json($categry, 201);
     }
 
-    $categry = Categry::create($data);
+    $categry = Category::create($data);
 
     return response()->json($categry, 201);
 }
@@ -56,7 +56,7 @@ class CategryController extends Controller
      */
     public function show( $categry)
     {
-        $categry= Categry::find($categry);
+        $categry = Category::withCount('books')->findOrFail($categry);
         return new CategryResource($categry);
     }
 
@@ -67,12 +67,12 @@ class CategryController extends Controller
     {
         $data = $request->validated();
     
-        $newCategry = new Categry([
+        $newCategry = new Category([
             'name' => $data['name'],
             'description' => $data['description'],
         ]);
     
-        $categry = Categry::findOrFail($categry);
+        $categry = Category::findOrFail($categry);
         $categry->delete();
     
         $categry->name = $newCategry->name;
@@ -89,7 +89,7 @@ class CategryController extends Controller
      */
     public function destroy($categry)
 {
-    $categry = Categry::findOrFail($categry);
+    $categry = Category::findOrFail($categry);
     $categry->delete();
 
     return response()->json(['message' => 'Category deleted successfully']);
@@ -99,12 +99,10 @@ class CategryController extends Controller
 
 public function restore($categoryId)
 {
-    $category = Categry::withTrashed()->findOrFail($categoryId);
+    $category = Category::withTrashed()->findOrFail($categoryId);
     $category->restore();
 
     return response()->json(['message' => 'Category restored successfully']);
 }
-
-
 
 }

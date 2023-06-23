@@ -13,6 +13,7 @@ class CategryResource extends JsonResource
      * @return array<string, mixed>
      */
 
+
     public function toArray(Request $request): array
     {
         
@@ -20,6 +21,9 @@ class CategryResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'description'=>$this->description,
+            'books_count' => $this->books_count,
+
+
         ];
     }
 }
