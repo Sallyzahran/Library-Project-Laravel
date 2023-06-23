@@ -15,12 +15,7 @@ class Category extends Model
     {
         return $this->hasMany(Book::class);
     }
-    // protected $appends = ['books_count'];
-
-    // public function getBooksCountAttribute()
-    // {
-    //     return $this->books()->count();
-    // }
+  
    
     protected $fillable=[
         'name',

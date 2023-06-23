@@ -22,7 +22,7 @@ class UpdateCategryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:categories,name,' . $this->categry->id . '|max:20',
+            'name' => 'required|unique:categories,name,' . $this->categry. '|max:20',
             'description' => 'required',
         ];
     }
